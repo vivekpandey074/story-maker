@@ -13,3 +13,138 @@
   max-width: 2200px;
   box-sizing: border-box;
 }
+
+.categories {
+  display: flex;
+  width: 100%;
+  height: 35vh;
+  padding: 3vh 5vh;
+  border: 2px solid red;
+  box-sizing: border-box;
+  overflow-x: scroll;
+  gap: 2vw;
+}
+
+/* cat=categories */
+
+.cat_box {
+  position: relative;
+  height: 25vh;
+  width: 25vh;
+  border-radius: 2vw;
+  font-family: "DM Sans", system-ui;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 1vw;
+  color: white;
+  flex-shrink: 0;
+  background-color: black;
+  overflow: hidden;
+}
+
+.cat_cover_img {
+  width: 100%;
+  height: 100%;
+  opacity: 0.7;
+  background-size: cover;
+}
+
+.cat_text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5vw;
+
+  z-index: 999;
+}
+
+.no_scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no_scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.cat_active {
+  border: 4px solid #00acd2;
+}
+
+.cat_stories {
+  width: 100%;
+  border: 2px solid red;
+  height: 700px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cat_heading_text {
+  font-family: "DM Sans", system-ui;
+  font-weight: 700;
+  font-style: normal;
+  text-align: center;
+  font-size: 2vw;
+}
+
+.storycont {
+  width: 90%;
+}
+
+.storybox {
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+  height: 55vh;
+  border: 2px solid black;
+  font-family: "DM Sans", system-ui;
+  font-weight: 700;
+  font-style: normal;
+  text-align: center;
+  color: white;
+  position: relative;
+}
+
+.btn {
+  width: 10vw;
+  height: 6vh;
+  border: none;
+  border-radius: 5vw;
+  color: white;
+  font-family: "DM Sans", system-ui;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 1vw;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  justify-content: space-around;
+  background: #ff7373;
+  margin-top: 5vh;
+}
+
+.storyimage {
+  width: 100%;
+  height: 100%;
+}
+
+.story_text_cont {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  bottom: 0;
+  z-index: 99;
+  text-align: start;
+}
+.story_heading {
+  font-size: 1.2vw;
+}
+
+.story_subtext {
+  font-size: 1vw;
+}
