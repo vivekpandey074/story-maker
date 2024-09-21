@@ -1,0 +1,51 @@
+.header {
+  width: 100%;
+  height: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  box-shadow: 0 2px 8px 4px #00000026;
+  padding: 0.5vw;
+  box-sizing: border-box;
+}
+
+.btnbox {
+  display: flex;
+  gap: 2vw;
+  margin-right: 2vw;
+  align-items: center;
+}
+
+.btn {
+  width: 10vw;
+  height: 6vh;
+  border: none;
+  border-radius: 5vw;
+  color: white;
+  font-family: "DM Sans", system-ui;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 1vw;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  justify-content: space-around;
+}
+.redbtn {
+  background: #ff7373;
+}
+
+.bluebtn {
+  background: #73abff;
+}
+
+.sampleuser {
+  height: 7vh;
+  width: 7vh;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.hamburger {
+  cursor: pointer;
+}
