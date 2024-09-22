@@ -61,14 +61,30 @@ export default function AddStory({ setShowLoginModal }) {
               className={classes.input + " " + classes.category_selection}
             >
               <option value="">Select Category</option>
-              <option value="Medical">Medical</option>
-              <option value="Fruits">Fruits</option>
-              <option value="Food">Food</option>
-              <option value="Travel">Travel</option>
-              <option value="Technology">Technology</option>
-              <option value="World">World</option>
-              <option value="Sports">Sports</option>
-              <option value="Others">Others</option>
+              <option value="Medical" className={classes.option_text}>
+                Medical
+              </option>
+              <option value="Fruits" className={classes.option_text}>
+                Fruits
+              </option>
+              <option value="Food" className={classes.option_text}>
+                Food
+              </option>
+              <option value="Travel" className={classes.option_text}>
+                Travel
+              </option>
+              <option value="Technology" className={classes.option_text}>
+                Technology
+              </option>
+              <option value="World" className={classes.option_text}>
+                World
+              </option>
+              <option value="Sports" className={classes.option_text}>
+                Sports
+              </option>
+              <option value="Others" className={classes.option_text}>
+                Others
+              </option>
             </select>
             <p className={classes.common_category_text}>
               This field will be common for all slides

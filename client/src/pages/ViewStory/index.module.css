@@ -1,0 +1,85 @@
+.main_div {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.overlay {
+  position: fixed;
+  opacity: 0.8;
+  z-index: 9999;
+  width: 100%;
+  height: 100%;
+  inset: 0;
+  background-color: black;
+}
+
+.modal_cont {
+  display: flex;
+  position: relative;
+  height: 90%;
+  z-index: 10000;
+  width: 60%;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 1.2vw;
+}
+
+.storyimage {
+  width: 100%;
+  height: 100%;
+  border-radius: 0.5vw;
+}
+
+.story_text_cont {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  bottom: 0;
+  gap: 0.5vw;
+  z-index: 99;
+  text-align: start;
+  padding: 0.8vw;
+}
+.story_heading {
+  font-size: 1.2vw;
+}
+
+.story_subtext {
+  font-size: 0.85vw;
+}
+
+.gradientimg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  inset: 0;
+  border-radius: 0.5vw;
+}
+
+.storybox {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  height: 100%;
+  font-family: "DM Sans", system-ui;
+  font-weight: 700;
+  font-style: normal;
+  text-align: center;
+  color: white;
+  position: relative;
+  border-radius: 1.5vw;
+}
+
+.arrow {
+  height: 5vw;
+}
+
+.btn_panel {
+  display: flex;
+  justify-content: space-around;
+}

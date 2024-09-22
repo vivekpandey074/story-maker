@@ -5,6 +5,8 @@ import defaultimage from "../../assets/defaultimage2.jpg";
 import downgradient from "../../assets/down-gradient.png";
 import upgradient from "../../assets/upgradient.png";
 
+import { Outlet } from "react-router-dom";
+
 const categories = [
   "All",
   "Food",
@@ -25,6 +27,7 @@ export default function Home() {
   return (
     <div className={classes.wrappercont}>
       <div className={classes.maincont}>
+        <Outlet />
         <Header />
         <div className={classes.categories + " " + classes.no_scrollbar}>
           {categories.map((item) => {
