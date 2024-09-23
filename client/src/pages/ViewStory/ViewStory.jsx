@@ -20,9 +20,16 @@ export default function ViewStory() {
           <img src={upgradient} alt="" className={classes.gradientimg} />
           <img src={defaultimage} alt="" className={classes.storyimage} />
           <img src={downgradient} alt="" className={classes.gradientimg} />
-          <div>
-            <div></div>
-            <div>
+          <div className={classes.upper_cont}>
+            <div className={classes.slide_array_cont}>
+              <div className={classes.slide_array_box}></div>
+              <div className={classes.slide_array_box}></div>
+              <div className={classes.slide_array_box}></div>
+              <div className={classes.slide_array_box}></div>
+              <div className={classes.slide_array_box}></div>
+              <div className={classes.slide_array_box}></div>
+            </div>
+            <div className={classes.upper_btn_panel}>
               <img src={storyclosebtn} alt="" />
               <img src={sharebtn} alt="" />
             </div>

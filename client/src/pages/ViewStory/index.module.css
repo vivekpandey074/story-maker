@@ -83,3 +83,32 @@
   display: flex;
   justify-content: space-around;
 }
+
+.upper_cont {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  height: 10vh;
+}
+
+.slide_array_cont {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 0.5vh;
+  height: 50%;
+  padding: 0 2vh;
+  box-sizing: border-box;
+}
+
+.slide_array_box {
+  flex: 1;
+  height: 0.2vw;
+  background-color: white;
+}
+
+.upper_btn_panel {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 2vh;
+}
