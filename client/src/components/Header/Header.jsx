@@ -5,9 +5,11 @@ import hamburgericon from "../../assets/hamburger-icon.svg";
 import sampleuser from "../../assets/sample_user.jpg";
 import Login from "../../pages/Login/Login";
 import AddStory from "../../pages/AddStory/AddStory";
+import { useSelector } from "react-redux";
 
 export default function Header() {
-  const [user, setUser] = useState(null);
+  const { user } = useSelector((state) => state.users);
+
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   return (
@@ -52,7 +54,7 @@ export default function Header() {
         )}
       </div>
       {showLoginModal ? (
-        <AddStory headingtext={"Login"} setShowLoginModal={setShowLoginModal} />
+        <Login headingtext={"Login"} setShowLoginModal={setShowLoginModal} />
       ) : (
         <></>
       )}

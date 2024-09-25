@@ -97,4 +97,6 @@
 
 .error_text {
   color: #ff0e0e;
+  width: 80%;
+  text-align: center;
 }

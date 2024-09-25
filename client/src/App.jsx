@@ -3,6 +3,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import NotFound from "./pages/NotFound/NotFound";
 import ViewStory from "./pages/ViewStory/ViewStory";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -15,6 +17,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
+      <ToastContainer />
     </>
   );
 }

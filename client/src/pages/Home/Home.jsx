@@ -4,8 +4,12 @@ import sports from "../../assets/sports.jpg";
 import defaultimage from "../../assets/defaultimage2.jpg";
 import downgradient from "../../assets/down-gradient.png";
 import upgradient from "../../assets/upgradient.png";
-
+import { toast } from "react-toastify";
+import { GetCurrentUser } from "../../api/users.js";
+import { useDispatch } from "react-redux";
 import { Outlet } from "react-router-dom";
+import { useEffect } from "react";
+import { SetUser } from "../../redux/userSlice.js";
 
 const categories = [
   "All",
@@ -24,6 +28,28 @@ const categories = [
 ];
 
 export default function Home() {
+  const dispatch = useDispatch();
+
+  const validateToken = async () => {
+    try {
+      const response = await GetCurrentUser();
+      if (response.success) {
+        dispatch(SetUser(response.currentuser));
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (err) {
+      toast.error(err.message || "Error occured while validating user");
+      localStorage.removeItem("token");
+    }
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      validateToken();
+    }
+  }, []);
+
   return (
     <div className={classes.wrappercont}>
       <div className={classes.maincont}>
