@@ -9,11 +9,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { GetCurrentUser } from "../../api/users";
 import { SetUser } from "../../redux/userSlice";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
   const { user } = useSelector((state) => state.users);
   const dispatch = useDispatch();
   const [showLogout, setShowLogout] = useState(false);
+  const navigate = useNavigate();
 
   const validateToken = async () => {
     try {
@@ -70,7 +72,10 @@ export default function Header() {
               <img src={bookmarkicon} alt="" />
               Bookmarks
             </button>
-            <button className={classes.btn + " " + classes.redbtn}>
+            <button
+              className={classes.btn + " " + classes.redbtn}
+              onClick={() => navigate("/addstory")}
+            >
               Add story
             </button>
             <img

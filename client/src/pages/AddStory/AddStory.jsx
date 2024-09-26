@@ -1,6 +1,49 @@
 import classes from "./index.module.css";
 import crossbtn from "../../assets/crossbtn2.svg";
-export default function AddStory({ setShowLoginModal }) {
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+
+const initialSlide = {
+  heading: "",
+  descriptions: "",
+  url: "",
+  likes: [],
+  bookmarks: [],
+};
+const initialState = [initialSlide, initialSlide, initialSlide];
+
+export default function AddStory() {
+  const navigate = useNavigate();
+  const [slidesArray, setSlidesArray] = useState(initialState);
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+
+  const handleRemoveSlide = () => {
+    setSlidesArray((prev) => {
+      return prev.filter((item, index) => index !== currentSlideIndex);
+    });
+
+    setCurrentSlideIndex((prev) => prev - 1);
+  };
+
+  const handleAddSlide = () => {
+    setSlidesArray((prev) => {
+      return [...prev, initialSlide];
+    });
+    setCurrentSlideIndex(slidesArray.length);
+  };
+
+  const handleChange = (e) => {
+    setSlidesArray((prev) => {
+      return prev.map((item, index) => {
+        if (index === currentSlideIndex) {
+          return { ...item, [e.target.name]: e.target.value };
+        } else {
+          return item;
+        }
+      });
+    });
+  };
+
   return (
     <div className={classes.main_div}>
       <div className={classes.overlay}></div>;
@@ -10,20 +53,39 @@ export default function AddStory({ setShowLoginModal }) {
           alt=""
           className={classes.crossbtn}
           onClick={() => {
-            setShowLoginModal(false);
+            navigate("/");
           }}
         />
         <p className={classes.add_slide_text}>Add upto 6 slides</p>
         <div className={classes.slideboxcont}>
-          <div className={classes.slidebox + " " + classes.active}>Slide 1</div>
-          <div className={classes.slidebox}>Slide 2</div>
-          <div className={classes.slidebox}>Slide 3</div>
-          <div className={classes.slidebox}>
-            Slide 4
-            <img src={crossbtn} alt="" className={classes.slide_cut_btn} />
-          </div>
-
-          <div className={classes.slidebox}>Add +</div>
+          {slidesArray.map((item, index) => (
+            <div
+              key={index}
+              className={
+                classes.slidebox +
+                " " +
+                (currentSlideIndex === index ? classes.active : "")
+              }
+            >
+              Slide {index + 1}
+              {index >= 3 && (
+                <img
+                  src={crossbtn}
+                  alt=""
+                  className={classes.slide_cut_btn}
+                  onClick={handleRemoveSlide}
+                />
+              )}
+            </div>
+          ))}
+          {slidesArray.length <= 5 && (
+            <div
+              className={classes.slidebox + " " + classes.add_btn}
+              onClick={handleAddSlide}
+            >
+              Add +
+            </div>
+          )}
         </div>
 
         <form action="" className={classes.form}>
@@ -32,6 +94,8 @@ export default function AddStory({ setShowLoginModal }) {
             <input
               name="heading"
               type="text"
+              value={slidesArray[currentSlideIndex].heading}
+              onChange={handleChange}
               className={classes.input}
               placeholder="Your heading"
             />

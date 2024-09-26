@@ -45,7 +45,8 @@ const handleUserLogin = asyncHandler(async (req, res, next) => {
 
   const validPassword = await bcrypt.compare(password, user.password);
 
-  if (!validPassword) throw new ApiError(401, "Invalid username or password");
+  if (!validPassword)
+    throw new ApiError(401, "Please enter valid username or password");
 
   const token = jwt.sign({ userId: user._id }, process.env.TOKEN_SECRET);
 

@@ -5,6 +5,7 @@ import NotFound from "./pages/NotFound/NotFound";
 import ViewStory from "./pages/ViewStory/ViewStory";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import AddStory from "./pages/AddStory/AddStory";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />}>
             <Route path="viewstories/:id" element={<ViewStory />} />
+            <Route path="addstory" element={<AddStory />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
