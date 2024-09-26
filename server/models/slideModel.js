@@ -20,9 +20,11 @@ const slideSchema = new mongoose.Schema(
     },
     likes: {
       type: [String],
+      default: [],
     },
     bookmarks: {
       type: [String],
+      default: [],
     },
   },
   {

@@ -1,5 +1,13 @@
 const router = require("express").Router();
+const {
+  handleCreateStory,
+  handleViewStory,
+  handleEditStory,
+} = require("../controllers/story");
+const authMiddleware = require("../middlewares/authMiddleware");
 
-router.post("/create-story", handleCreateStory);
-router.get("/view-story", handleViewStory);
-router.patch("/edit-story", handleEditStory);
+router.post("/post", authMiddleware, handleCreateStory);
+router.get("/view", handleViewStory);
+router.patch("/edit", handleEditStory);
+
+module.exports = router;

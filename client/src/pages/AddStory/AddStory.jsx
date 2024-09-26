@@ -2,10 +2,11 @@ import classes from "./index.module.css";
 import crossbtn from "../../assets/crossbtn2.svg";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-
+import { toast } from "react-toastify";
+import { PostStory } from "../../api/story";
 const initialSlide = {
   heading: "",
-  descriptions: "",
+  description: "",
   url: "",
   likes: [],
   bookmarks: [],
@@ -16,6 +17,8 @@ export default function AddStory() {
   const navigate = useNavigate();
   const [slidesArray, setSlidesArray] = useState(initialState);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const [category, setCategory] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleRemoveSlide = () => {
     setSlidesArray((prev) => {
@@ -42,6 +45,45 @@ export default function AddStory() {
         }
       });
     });
+  };
+  const handleSelectChange = (e) => {
+    setCategory(e.target.value);
+  };
+  const checkAllfieldRequired = (slidesArray, category) => {
+    if (!category) return false;
+
+    for (let i = 0; i < slidesArray.length; i++) {
+      const { heading, description, url } = slidesArray[i];
+
+      if (!heading || !description || !url) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+  const handlePostStory = async (e) => {
+    e.preventDefault();
+
+    if (!checkAllfieldRequired(slidesArray, category)) {
+      toast.error("All field of slides are required");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const response = await PostStory({ slidesArray, category });
+      setLoading(false);
+      if (response.success) {
+        toast.success(response.message);
+        navigate("/");
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (err) {
+      setLoading(false);
+      toast.error(err.message || "something went wrong while posting story");
+    }
   };
 
   return (
@@ -88,7 +130,7 @@ export default function AddStory() {
           )}
         </div>
 
-        <form action="" className={classes.form}>
+        <form className={classes.form} onSubmit={handlePostStory}>
           <div className={classes.inputcont}>
             <label htmlFor="heading">Heading :</label>
             <input
@@ -98,31 +140,41 @@ export default function AddStory() {
               onChange={handleChange}
               className={classes.input}
               placeholder="Your heading"
+              required
             />
           </div>
           <div className={classes.inputcont}>
             <label htmlFor="description">Description :</label>
             <textarea
               name="description"
+              value={slidesArray[currentSlideIndex].description}
+              onChange={handleChange}
               className={classes.description_text}
               placeholder="Story Description"
+              required
             />
           </div>
           <div className={classes.inputcont}>
             <label htmlFor="media">Image / Video : </label>
             <input
-              name="media"
+              name="url"
               type="text"
+              value={slidesArray[currentSlideIndex].url}
+              onChange={handleChange}
               className={classes.input}
               placeholder="Add Image/Video URL"
+              required
             />
           </div>
           <div className={classes.inputcont}>
             <label htmlFor="">Category :</label>
             <select
-              name=""
+              name="category"
               id=""
+              onChange={handleSelectChange}
+              value={category}
               className={classes.input + " " + classes.category_selection}
+              required
             >
               <option value="">Select Category</option>
               <option value="Medical" className={classes.option_text}>
@@ -156,14 +208,35 @@ export default function AddStory() {
           </div>
           <div className={classes.btn_panel}>
             <div className={classes.nav_btns}>
-              <button className={classes.btn + " " + classes.greenbtn}>
+              <button
+                className={classes.btn + " " + classes.greenbtn}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setCurrentSlideIndex((prev) => (prev === 0 ? 0 : prev - 1));
+                }}
+              >
                 Previous
               </button>
-              <button className={classes.btn + " " + classes.bluebtn}>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  setCurrentSlideIndex((prev) =>
+                    prev === slidesArray.length - 1
+                      ? slidesArray.length - 1
+                      : prev + 1
+                  );
+                }}
+                className={classes.btn + " " + classes.bluebtn}
+              >
                 Next
               </button>
             </div>
-            <button className={classes.btn + " " + classes.redbtn}>Post</button>
+            <button
+              type="submit"
+              className={classes.btn + " " + classes.redbtn}
+            >
+              {loading ? "Posting..." : "Post"}
+            </button>
           </div>
         </form>
       </div>
