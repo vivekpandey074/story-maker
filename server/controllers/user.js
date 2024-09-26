@@ -7,8 +7,6 @@ const ApiError = require("../utils/ApiError");
 const handleUserRegister = asyncHandler(async (req, res, next) => {
   const { username, password } = req.body;
 
-  console.log(username, password);
-
   if ([username, password].some((field) => field.trim() == "")) {
     throw new ApiError(400, "All fields are required");
   }
