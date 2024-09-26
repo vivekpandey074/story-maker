@@ -41,7 +41,7 @@ const handleUserLogin = asyncHandler(async (req, res, next) => {
 
   const user = await User.findOne({ username });
 
-  if (!user) throw new ApiError("404", "Invalid username or password");
+  if (!user) throw new ApiError(404, "Please enter valid username or password");
 
   const validPassword = await bcrypt.compare(password, user.password);
 

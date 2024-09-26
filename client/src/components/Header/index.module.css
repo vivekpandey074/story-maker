@@ -49,3 +49,25 @@
 .hamburger {
   cursor: pointer;
 }
+
+.name_text {
+  font-family: "DM Sans", system-ui;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 1.2vw;
+}
+
+.logout_div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1111;
+  position: absolute;
+  right: 0;
+  top: 10vh;
+  width: 14vw;
+  padding: 2vh;
+  height: 16vh;
+  background-color: white;
+}

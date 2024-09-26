@@ -2,8 +2,10 @@ import classes from "./index.module.css";
 import eyebtn from "../../assets/eye.svg";
 import crossbtn from "../../assets/crossbtn.svg";
 import { useRef, useState } from "react";
-import { RegisterUser } from "../../api/users";
+import { GetCurrentUser, LoginUser, RegisterUser } from "../../api/users";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { SetUser } from "../../redux/userSlice";
 
 const initialState = {
   username: "",
@@ -31,6 +33,22 @@ export default function Login({
   const [form, setForm] = useState(initialState);
   const { username, password } = form;
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+
+  const validateToken = async () => {
+    try {
+      const response = await GetCurrentUser();
+      if (response.success) {
+        dispatch(SetUser(response.currentuser));
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (err) {
+      toast.error(err.message || "Something went wrong while validating user");
+      localStorage.removeItem("token");
+    }
+  };
+
   const toggleInputType = () => {
     if (inputref.current) {
       inputref.current.type =
@@ -56,8 +74,27 @@ export default function Login({
     if (headingtext === "Register") setError("");
   };
 
-  const handleLoginSubmit = (e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
+
+    try {
+      setLoading(true);
+      const response = await LoginUser(form);
+      setLoading(false);
+      if (response.success) {
+        localStorage.setItem("token", response.token);
+        validateToken();
+        toast.success(response.message);
+        setShowLoginModal(false);
+      } else {
+        if (response.message === "Please enter valid username or password") {
+          setError("Please enter valid username or password");
+        } else throw new Error(response.message);
+      }
+    } catch (err) {
+      setLoading(false);
+      toast.error(err.message || "Something went wrong while logging in");
+    }
   };
 
   const handleRegisterSubmit = async (e) => {
