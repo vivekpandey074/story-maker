@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { PostStory } from "../../api/story";
+import axios from "axios";
+
 const initialSlide = {
   heading: "",
   description: "",
@@ -49,11 +51,31 @@ export default function AddStory() {
   const handleSelectChange = (e) => {
     setCategory(e.target.value);
   };
+
+  const checkValidUrl = async (url) => {
+    try {
+      const response = await axios.head(url); // Use 'head' to get headers without downloading content
+      const contentType = response.headers["content-type"];
+
+      if (contentType.startsWith("image")) {
+        return "Image";
+      } else if (contentType.startsWith("video")) {
+        return "Video";
+      } else {
+        return "Unknown";
+      }
+    } catch (err) {
+      return "Invalid URL";
+    }
+  };
+
   const checkAllfieldRequired = (slidesArray, category) => {
     if (!category) return false;
 
     for (let i = 0; i < slidesArray.length; i++) {
       const { heading, description, url } = slidesArray[i];
+
+      // console.log(checkValidUrl(url));
 
       if (!heading || !description || !url) {
         return false;
