@@ -7,6 +7,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AddStory from "./pages/AddStory/AddStory";
 import Login from "./pages/Login/Login";
+import Bookmarks from "./pages/Bookmarks/Bookmarks";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
 
             <Route path="addstory" element={<AddStory />} />
           </Route>
+          <Route path="/bookmarks" element={<Bookmarks />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

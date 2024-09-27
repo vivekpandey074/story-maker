@@ -45,3 +45,20 @@ export const ToggleLike = async (id) => {
     return err.response.data;
   }
 };
+
+export const GetMyStories = async () => {
+  try {
+    const response = await axiosInstance.get("/api/story/mystories");
+    return response.data;
+  } catch (err) {
+    return err.response.data;
+  }
+};
+export const GetBookmarks = async () => {
+  try {
+    const response = await axiosInstance.get("/api/story/bookmarks");
+    return response.data;
+  } catch (err) {
+    return err.response.data;
+  }
+};

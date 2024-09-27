@@ -6,29 +6,39 @@ import downgradient from "../../assets/down-gradient.png";
 import upgradient from "../../assets/upgradient.png";
 import { toast } from "react-toastify";
 import { GetCurrentUser } from "../../api/users.js";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { SetUser } from "../../redux/userSlice.js";
-import { GetHomeFeed } from "../../api/story.js";
+import { GetHomeFeed, GetMyStories } from "../../api/story.js";
+import all from "../../assets/allnews.jpg";
+import food from "../../assets/food.jpg";
+import travel from "../../assets/travel.jpg";
+import technology from "../../assets/technology.jpg";
+import fruits from "../../assets/fruits.jpg";
+import medical from "../../assets/medical.jpg";
+import world from "../../assets/world.jpeg";
+import others from "../../assets/others.jpg";
 
 const categories = [
-  "ALL",
-  "Food",
-  "Travel",
-  "Technology",
-  "Fruits",
-  "Medical",
-  "World",
-  "Others",
+  { type: "ALL", path: all },
+  { type: "Food", path: food },
+  { type: "Travel", path: travel },
+  { type: "Technology", path: technology },
+  { type: "Fruits", path: fruits },
+  { type: "Medical", path: medical },
+  { type: "World", path: world },
+  { type: "Others", path: others },
 ];
 
 export default function Home() {
   const dispatch = useDispatch();
   const [filterArray, setFilterArray] = useState(["ALL"]);
+  const [mystories, setMyStories] = useState([]);
   const [feedArray, setFeedArray] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { user } = useSelector((state) => state.users);
 
   const toggleCategory = (category) => {
     if (filterArray.includes(category)) {
@@ -58,7 +68,6 @@ export default function Home() {
   }, []);
 
   const FetchHomeFeed = async (filterArray) => {
-    console.log(filterArray);
     try {
       setLoading(true);
       const response = await GetHomeFeed(filterArray);
@@ -76,98 +85,188 @@ export default function Home() {
       );
     }
   };
+  const FetchMyStories = async () => {
+    try {
+      setLoading(true);
+      const response = await GetMyStories();
+      setLoading(false);
+      if (response.success) {
+        setMyStories(response.mystories);
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (err) {
+      setLoading(false);
+      toast.error(
+        err.message || "Something went wrong while fetching home feed"
+      );
+    }
+  };
 
   useEffect(() => {
     FetchHomeFeed(filterArray);
   }, [filterArray]);
 
+  useEffect(() => {
+    FetchMyStories();
+  }, []);
+
   return (
     <div className={classes.wrappercont}>
-      <div className={classes.maincont}>
-        <Outlet />
-        <Header />
-        <div className={classes.categories + " " + classes.no_scrollbar}>
-          {categories.map((item) => {
-            return (
-              <>
-                <div
-                  className={
-                    classes.cat_box +
-                    " " +
-                    (filterArray.includes(item) ? classes.cat_active : "")
-                  }
-                >
-                  <img src={sports} alt="" className={classes.cat_cover_img} />
-                  <div
-                    className={classes.cat_text}
-                    onClick={() => toggleCategory(item)}
-                  >
-                    <p>{item}</p>
-                  </div>
-                </div>
-              </>
-            );
-          })}
-        </div>
-
-        {feedArray.map((item) => (
-          <>
-            <div className={classes.cat_stories}>
-              <p className={classes.cat_heading_text}>
-                Top Stories About {item.category}
-              </p>
-              <div className={classes.storycont}>
-                {!item.feed.length && (
-                  <p className={classes.no_stories_text}>
-                    No stories Available
-                  </p>
-                )}
-
-                {item.feed.map((story) => (
+      {loading ? (
+        <h1 className={classes.no_stories_text}>Loading...</h1>
+      ) : (
+        <>
+          <div className={classes.maincont}>
+            <Outlet />
+            <Header />
+            <div className={classes.categories + " " + classes.no_scrollbar}>
+              {categories.map((item) => {
+                return (
                   <>
                     <div
-                      className={classes.storybox}
-                      onClick={() => {
-                        navigate(`/viewstories/${story._id}?index`);
-                        window.scrollTo({
-                          top: 0,
-                        });
-                      }}
+                      className={
+                        classes.cat_box +
+                        " " +
+                        (filterArray.includes(item) ? classes.cat_active : "")
+                      }
                     >
                       <img
-                        src={upgradient}
+                        src={item.path}
                         alt=""
-                        className={classes.gradientimg}
+                        className={classes.cat_cover_img}
                       />
-                      <img
-                        src={story.slides[0].url || defaultimage}
-                        alt=""
-                        className={classes.storyimage}
-                      />
-                      <img
-                        src={downgradient}
-                        alt=""
-                        className={classes.gradientimg}
-                      />
-                      <div className={classes.story_text_cont}>
-                        <h1 className={classes.story_heading}>
-                          {story.slides[0].heading}
-                        </h1>
-                        <p className={classes.story_subtext}>
-                          {story.slides[0].description}
-                        </p>
+                      <div
+                        className={classes.cat_text}
+                        onClick={() => toggleCategory(item)}
+                      >
+                        <p>{item.type}</p>
                       </div>
                     </div>
                   </>
-                ))}
-              </div>
-              {item.feed.length >= 5 && (
-                <button className={classes.btn}>See more</button>
-              )}
+                );
+              })}
             </div>
-          </>
-        ))}
-      </div>
+
+            {/* YOUR STORIES */}
+            {user && (
+              <>
+                <div className={classes.cat_stories}>
+                  <p className={classes.cat_heading_text}>Your Stories</p>
+                  <div className={classes.storycont}>
+                    {!mystories.length && (
+                      <p className={classes.no_stories_text}>
+                        No stories Available
+                      </p>
+                    )}
+
+                    {mystories.map((story) => (
+                      <>
+                        <div
+                          className={classes.storybox}
+                          onClick={() => {
+                            navigate(`/viewstories/${story._id}?index`);
+                            window.scrollTo({
+                              top: 0,
+                            });
+                          }}
+                        >
+                          <img
+                            src={upgradient}
+                            alt=""
+                            className={classes.gradientimg}
+                          />
+                          <img
+                            src={story.slides[0].url || defaultimage}
+                            alt=""
+                            className={classes.storyimage}
+                          />
+                          <img
+                            src={downgradient}
+                            alt=""
+                            className={classes.gradientimg}
+                          />
+                          <div className={classes.story_text_cont}>
+                            <h1 className={classes.story_heading}>
+                              {story.slides[0].heading}
+                            </h1>
+                            <p className={classes.story_subtext}>
+                              {story.slides[0].description}
+                            </p>
+                          </div>
+                        </div>
+                      </>
+                    ))}
+                  </div>
+                  {mystories.length >= 5 && (
+                    <button className={classes.btn}>See more</button>
+                  )}
+                </div>
+              </>
+            )}
+
+            {/* HOME FEED */}
+
+            {feedArray.map((item) => (
+              <>
+                <div className={classes.cat_stories}>
+                  <p className={classes.cat_heading_text}>
+                    Top Stories About {item.category}
+                  </p>
+                  <div className={classes.storycont}>
+                    {!item.feed.length && (
+                      <p className={classes.no_stories_text}>
+                        No stories Available
+                      </p>
+                    )}
+
+                    {item.feed.map((story) => (
+                      <>
+                        <div
+                          className={classes.storybox}
+                          onClick={() => {
+                            navigate(`/viewstories/${story._id}?index`);
+                            window.scrollTo({
+                              top: 0,
+                            });
+                          }}
+                        >
+                          <img
+                            src={upgradient}
+                            alt=""
+                            className={classes.gradientimg}
+                          />
+                          <img
+                            src={story.slides[0].url || defaultimage}
+                            alt=""
+                            className={classes.storyimage}
+                          />
+                          <img
+                            src={downgradient}
+                            alt=""
+                            className={classes.gradientimg}
+                          />
+                          <div className={classes.story_text_cont}>
+                            <h1 className={classes.story_heading}>
+                              {story.slides[0].heading}
+                            </h1>
+                            <p className={classes.story_subtext}>
+                              {story.slides[0].description}
+                            </p>
+                          </div>
+                        </div>
+                      </>
+                    ))}
+                  </div>
+                  {item.feed.length >= 5 && (
+                    <button className={classes.btn}>See more</button>
+                  )}
+                </div>
+              </>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }

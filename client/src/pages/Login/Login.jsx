@@ -33,7 +33,6 @@ export default function Login({ headingtext }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const { storyId, index } = location.state;
 
   const validateToken = async () => {
     try {
@@ -85,8 +84,10 @@ export default function Login({ headingtext }) {
         localStorage.setItem("token", response.token);
         validateToken();
         toast.success(response.message);
-        if (storyId) {
-          navigate(`/viewstories/${storyId}?index=${index}`);
+        if (location?.state?.storyId) {
+          navigate(
+            `/viewstories/${location?.state?.storyId}?index=${location?.state?.index}`
+          );
         } else navigate("/");
       } else {
         if (response.message === "Please enter valid username or password") {

@@ -1,0 +1,87 @@
+.main_div {
+  width: 100%;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+.cat_stories {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cat_heading_text {
+  font-family: "DM Sans", system-ui;
+  font-weight: 700;
+  font-style: normal;
+  text-align: center;
+  font-size: 2vw;
+}
+
+.storycont {
+  display: flex;
+  justify-content: start;
+  gap: 6vw;
+  width: 90%;
+}
+
+.storybox {
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+  height: 60vh;
+  font-family: "DM Sans", system-ui;
+  font-weight: 700;
+  font-style: normal;
+  text-align: center;
+  color: white;
+  position: relative;
+  border-radius: 1.5vw;
+  cursor: pointer;
+}
+
+.gradientimg {
+  position: absolute;
+  width: 100%;
+  height: 60vh;
+  inset: 0;
+  border-radius: 0.5vw;
+}
+
+.storyimage {
+  width: 100%;
+  height: 100%;
+  border-radius: 0.5vw;
+}
+
+.story_text_cont {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  bottom: 0;
+  z-index: 99;
+  text-align: start;
+  padding: 0.5vw;
+}
+.story_heading {
+  font-size: 1.2vw;
+}
+
+.story_subtext {
+  font-size: 0.85vw;
+}
+
+.no_stories_text {
+  color: #8e8e8e;
+  width: 100%;
+  height: 40vh;
+  font-family: "DM Sans", system-ui;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 1.5vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

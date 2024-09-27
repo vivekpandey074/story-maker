@@ -169,6 +169,27 @@ const handleToggleLike = asyncHandler(async (req, res, next) => {
   });
 });
 
+const handleMyStories = asyncHandler(async (req, res, next) => {
+  const mystories = await Story.find({ creator: req.body.userId }).populate(
+    "slides"
+  );
+
+  res.send({
+    success: true,
+    message: "user stories fetched successsfully",
+    mystories,
+  });
+});
+const handleBookmarks = asyncHandler(async (req, res, next) => {
+  const bookmarks = await Slide.find({ bookmarks: req.body.userId });
+
+  res.send({
+    success: true,
+    message: "user stories fetched successsfully",
+    bookmarks,
+  });
+});
+
 module.exports = {
   handleCreateStory,
   handleViewStory,
@@ -176,4 +197,6 @@ module.exports = {
   handleGetHomeFeed,
   handleToggleBookmark,
   handleToggleLike,
+  handleMyStories,
+  handleBookmarks,
 };

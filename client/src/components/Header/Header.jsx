@@ -9,7 +9,7 @@ import { SetUser } from "../../redux/userSlice";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-export default function Header() {
+export default function Header({ bookmarkactive }) {
   const { user } = useSelector((state) => state.users);
   const dispatch = useDispatch();
   const [showLogout, setShowLogout] = useState(false);
@@ -32,6 +32,7 @@ export default function Header() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     setShowLogout(false);
+    navigate("/");
     dispatch(SetUser(null));
   };
 
@@ -64,7 +65,16 @@ export default function Header() {
           </div>
         ) : (
           <div className={classes.btnbox}>
-            <button className={classes.btn + " " + classes.redbtn}>
+            <button
+              className={
+                classes.btn +
+                " " +
+                classes.redbtn +
+                " " +
+                (bookmarkactive ? classes.bookmark_active : "")
+              }
+              onClick={() => navigate("/bookmarks")}
+            >
               <img src={bookmarkicon} alt="" />
               Bookmarks
             </button>
