@@ -1,6 +1,6 @@
 import Header from "../../components/Header/Header";
 import classes from "./index.module.css";
-import sports from "../../assets/sports.jpg";
+
 import defaultimage from "../../assets/defaultimage2.jpg";
 import downgradient from "../../assets/down-gradient.png";
 import upgradient from "../../assets/upgradient.png";
@@ -19,6 +19,7 @@ import fruits from "../../assets/fruits.jpg";
 import medical from "../../assets/medical.jpg";
 import world from "../../assets/world.jpeg";
 import others from "../../assets/others.jpg";
+import edit from "../../assets/edit.svg";
 
 const categories = [
   { type: "ALL", path: all },
@@ -31,10 +32,21 @@ const categories = [
   { type: "Others", path: others },
 ];
 
+const expandedstate = {
+  Food: false,
+  Travel: false,
+  Fruits: false,
+  Technology: false,
+  Medical: false,
+  World: false,
+  Others: false,
+  MyStories: false,
+};
 export default function Home() {
   const dispatch = useDispatch();
   const [filterArray, setFilterArray] = useState(["ALL"]);
   const [mystories, setMyStories] = useState([]);
+  const [expanded, setExpanded] = useState(expandedstate);
   const [feedArray, setFeedArray] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -74,7 +86,6 @@ export default function Home() {
       setLoading(false);
       if (response.success) {
         setFeedArray(response.feedarray);
-        console.log(response.feedarray);
       } else {
         throw new Error(response.message);
       }
@@ -103,6 +114,29 @@ export default function Home() {
     }
   };
 
+  const filterArrayIncludes = (filterArray, category) => {
+    for (let i = 0; i < filterArray.length; i++) {
+      if (filterArray[i] === category) return true;
+    }
+
+    return false;
+  };
+
+  const visibleLength = (arr, category) => {
+    if (expanded[category] || arr.length <= 4) {
+      return arr;
+    } else {
+      return arr.slice(0, 4);
+    }
+  };
+
+  const handleSeeMore = (category) => {
+    setExpanded((prev) => ({ ...prev, [category]: true }));
+  };
+
+  const handleEdit = (story) => [
+    navigate("/updatestory", { state: { story } }),
+  ];
   useEffect(() => {
     FetchHomeFeed(filterArray);
   }, [filterArray]);
@@ -128,7 +162,9 @@ export default function Home() {
                       className={
                         classes.cat_box +
                         " " +
-                        (filterArray.includes(item) ? classes.cat_active : "")
+                        (filterArrayIncludes(filterArray, item.type)
+                          ? classes.cat_active
+                          : "")
                       }
                     >
                       <img
@@ -138,7 +174,7 @@ export default function Home() {
                       />
                       <div
                         className={classes.cat_text}
-                        onClick={() => toggleCategory(item)}
+                        onClick={() => toggleCategory(item.type)}
                       >
                         <p>{item.type}</p>
                       </div>
@@ -160,7 +196,7 @@ export default function Home() {
                       </p>
                     )}
 
-                    {mystories.map((story) => (
+                    {visibleLength(mystories, "MyStories").map((story) => (
                       <>
                         <div
                           className={classes.storybox}
@@ -194,12 +230,28 @@ export default function Home() {
                               {story.slides[0].description}
                             </p>
                           </div>
+                          <div
+                            className={classes.edit_div}
+                            onClick={() => handleEdit(story)}
+                          >
+                            <img
+                              src={edit}
+                              alt=""
+                              className={classes.edit_logo}
+                            />
+                            <p className={classes.edit_text}>Edit</p>
+                          </div>
                         </div>
                       </>
                     ))}
                   </div>
-                  {mystories.length >= 5 && (
-                    <button className={classes.btn}>See more</button>
+                  {mystories.length >= 5 && !expanded["MyStories"] && (
+                    <button
+                      className={classes.btn}
+                      onClick={() => handleSeeMore("MyStories")}
+                    >
+                      See more
+                    </button>
                   )}
                 </div>
               </>
@@ -220,7 +272,7 @@ export default function Home() {
                       </p>
                     )}
 
-                    {item.feed.map((story) => (
+                    {visibleLength(item.feed, item.category).map((story) => (
                       <>
                         <div
                           className={classes.storybox}
@@ -254,12 +306,34 @@ export default function Home() {
                               {story.slides[0].description}
                             </p>
                           </div>
+                          {story?.creator === user?._id ? (
+                            <>
+                              <div
+                                className={classes.edit_div}
+                                onClick={() => handleEdit(story)}
+                              >
+                                <img
+                                  src={edit}
+                                  alt=""
+                                  className={classes.edit_logo}
+                                />
+                                <p className={classes.edit_text}>Edit</p>
+                              </div>
+                            </>
+                          ) : (
+                            <></>
+                          )}
                         </div>
                       </>
                     ))}
                   </div>
-                  {item.feed.length >= 5 && (
-                    <button className={classes.btn}>See more</button>
+                  {item.feed.length >= 5 && !expanded[item.category] && (
+                    <button
+                      className={classes.btn}
+                      onClick={() => handleSeeMore(item.category)}
+                    >
+                      See more
+                    </button>
                   )}
                 </div>
               </>

@@ -1,9 +1,10 @@
 import classes from "./index.module.css";
 import crossbtn from "../../assets/crossbtn2.svg";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { PostStory } from "../../api/story";
+import { UpdateStoryApi } from "../../api/story";
+
 const initialSlide = {
   heading: "",
   description: "",
@@ -11,13 +12,13 @@ const initialSlide = {
   likes: [],
   bookmarks: [],
 };
-const initialState = [initialSlide, initialSlide, initialSlide];
 
-export default function AddStory() {
+export default function UpdateStory() {
+  const location = useLocation();
   const navigate = useNavigate();
-  const [slidesArray, setSlidesArray] = useState(initialState);
+  const [slidesArray, setSlidesArray] = useState(location.state.story.slides);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState(location.state.story.category);
   const [loading, setLoading] = useState(false);
 
   const handleRemoveSlide = () => {
@@ -72,7 +73,7 @@ export default function AddStory() {
 
     try {
       setLoading(true);
-      const response = await PostStory({ slidesArray, category });
+      const response = await UpdateStoryApi(location.story);
       setLoading(false);
       if (response.success) {
         toast.success(response.message);

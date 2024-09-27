@@ -1,0 +1,197 @@
+.main_div {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.overlay {
+  position: fixed;
+  opacity: 0.8;
+  z-index: 9999;
+  width: 100%;
+  height: 100%;
+  inset: 0;
+  background-color: black;
+}
+
+.modal_cont {
+  position: relative;
+  height: 90%;
+  z-index: 10000;
+  width: 60%;
+  background-color: white;
+  border-radius: 1.2vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.crossbtn {
+  position: absolute;
+  top: 1vw;
+  height: 2.2vw;
+  right: 2vw;
+  cursor: pointer;
+}
+
+.add_slide_text {
+  color: #474141;
+  font-family: "DM Sans", system-ui;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 1vw;
+  position: absolute;
+  top: 3vw;
+  right: 6vw;
+}
+
+.slideboxcont {
+  width: 80%;
+  margin-top: 14vh;
+  margin-bottom: 2vh;
+  display: flex;
+  height: 6vw;
+  box-sizing: border-box;
+  padding: 0.5vw;
+  justify-content: start;
+  align-items: center;
+  gap: 2vw;
+}
+
+.slidebox {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 6vw;
+  font-family: "DM Sans", system-ui;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 1.2vw;
+  border-radius: 0.5vw;
+  height: 100%;
+  box-shadow: 0px 4px 8px 4px #0000001a;
+}
+
+.slide_cut_btn {
+  position: absolute;
+  height: 1.4vw;
+  right: -0.5vw;
+  top: 1.5vw;
+  cursor: pointer;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  width: 80%;
+  gap: 1vw;
+}
+
+.btn {
+  width: 9vw;
+  height: 6.5vh;
+  border: none;
+  border-radius: 1.3vw;
+  color: white;
+  font-family: "DM Sans", system-ui;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 1.3vw;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  justify-content: space-around;
+}
+
+.bluebtn {
+  background: #73abff;
+}
+.greenbtn {
+  background: #7eff73;
+}
+
+.redbtn {
+  background: #ff7373;
+}
+
+.btn_panel {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  margin-top: 1.2vw;
+  justify-content: space-between;
+}
+
+.nav_btns {
+  display: flex;
+  gap: 2vw;
+}
+
+.inputcont {
+  position: relative;
+  width: 80%;
+  display: flex;
+  font-size: 1.5vw;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "DM Sans", system-ui;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.input {
+  width: 55%;
+  border: 2px solid black;
+  padding: 0.7vw;
+  color: #474141;
+  font-family: "DM Sans", system-ui;
+  font-weight: 700;
+  font-size: 1vw;
+  font-style: normal;
+}
+
+.common_category_text {
+  font-size: 0.8vw;
+  position: absolute;
+  right: -10vw;
+  text-wrap: wrap;
+  width: 8vw;
+}
+
+.description_text {
+  width: 55%;
+  height: 16vh;
+  padding: 0.7vw;
+  border: 2px solid black;
+  color: #474141;
+  font-family: "DM Sans", system-ui;
+  font-weight: 700;
+  font-size: 1vw;
+  font-style: normal;
+  resize: none;
+}
+
+.category_selection {
+  width: 60%;
+}
+
+.active {
+  border: 2px solid #73abff;
+}
+
+.option_text {
+  font-family: "DM Sans", system-ui;
+  font-weight: 700;
+  font-size: 1vw;
+  color: black;
+}
+
+.add_btn {
+  cursor: pointer;
+}

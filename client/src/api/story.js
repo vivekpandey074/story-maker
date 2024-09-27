@@ -8,6 +8,14 @@ export const PostStory = async (payload) => {
     return err.response.data;
   }
 };
+export const UpdateStory = async (story) => {
+  try {
+    const response = await axiosInstance.patch("/api/story/update", { story });
+    return response.data;
+  } catch (err) {
+    return err.response.data;
+  }
+};
 
 export const GetHomeFeed = async (filterArray) => {
   try {

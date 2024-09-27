@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import AddStory from "./pages/AddStory/AddStory";
 import Login from "./pages/Login/Login";
 import Bookmarks from "./pages/Bookmarks/Bookmarks";
+import UpdateStory from "./pages/UpdateStory/UpdateStory";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path="viewstories/:id" element={<ViewStory />} />
 
             <Route path="addstory" element={<AddStory />} />
+            <Route path="updatestory" element={<UpdateStory />} />
           </Route>
           <Route path="/bookmarks" element={<Bookmarks />} />
           <Route path="*" element={<NotFound />} />
