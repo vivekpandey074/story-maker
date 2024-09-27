@@ -134,9 +134,13 @@ export default function Home() {
     setExpanded((prev) => ({ ...prev, [category]: true }));
   };
 
-  const handleEdit = (story) => [
-    navigate("/updatestory", { state: { story } }),
-  ];
+  const handleEdit = (e, story) => {
+    e.stopPropagation();
+    navigate("/updatestory", { state: { story } });
+    window.scrollTo({
+      top: 0,
+    });
+  };
   useEffect(() => {
     FetchHomeFeed(filterArray);
   }, [filterArray]);
@@ -232,7 +236,7 @@ export default function Home() {
                           </div>
                           <div
                             className={classes.edit_div}
-                            onClick={() => handleEdit(story)}
+                            onClick={(e) => handleEdit(e, story)}
                           >
                             <img
                               src={edit}
@@ -310,7 +314,7 @@ export default function Home() {
                             <>
                               <div
                                 className={classes.edit_div}
-                                onClick={() => handleEdit(story)}
+                                onClick={(e) => handleEdit(e, story)}
                               >
                                 <img
                                   src={edit}

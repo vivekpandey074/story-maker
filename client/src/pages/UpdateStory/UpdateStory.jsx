@@ -22,18 +22,11 @@ export default function UpdateStory() {
   const [loading, setLoading] = useState(false);
 
   const handleRemoveSlide = () => {
-    setSlidesArray((prev) => {
-      return prev.filter((item, index) => index !== currentSlideIndex);
-    });
-
-    setCurrentSlideIndex((prev) => prev - 1);
+    toast.info("Cannot remove slide in edit mode");
   };
 
   const handleAddSlide = () => {
-    setSlidesArray((prev) => {
-      return [...prev, initialSlide];
-    });
-    setCurrentSlideIndex(slidesArray.length);
+    toast.info("Cannot add new slide in edit mode");
   };
 
   const handleChange = (e) => {
@@ -73,7 +66,11 @@ export default function UpdateStory() {
 
     try {
       setLoading(true);
-      const response = await UpdateStoryApi(location.story);
+      const response = await UpdateStoryApi({
+        id: location.state.story._id,
+        slides: slidesArray,
+        category: category,
+      });
       setLoading(false);
       if (response.success) {
         toast.success(response.message);
@@ -237,7 +234,7 @@ export default function UpdateStory() {
               type="submit"
               className={classes.btn + " " + classes.redbtn}
             >
-              {loading ? "Posting..." : "Post"}
+              {loading ? "Editing..." : "Edit"}
             </button>
           </div>
         </form>

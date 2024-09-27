@@ -8,9 +8,9 @@ export const PostStory = async (payload) => {
     return err.response.data;
   }
 };
-export const UpdateStory = async (story) => {
+export const UpdateStoryApi = async (payload) => {
   try {
-    const response = await axiosInstance.patch("/api/story/update", { story });
+    const response = await axiosInstance.patch("/api/story/edit", payload);
     return response.data;
   } catch (err) {
     return err.response.data;

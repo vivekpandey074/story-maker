@@ -54,7 +54,38 @@ const handleViewStory = asyncHandler(async (req, res, next) => {
   });
 });
 
-const handleEditStory = asyncHandler(async (req, res, next) => {});
+const handleEditStory = asyncHandler(async (req, res, next) => {
+  const { id, slides, category } = req.body;
+  console.log(id, slides, category);
+  const updatedStory = await Story.findByIdAndUpdate(
+    id,
+    { category: category },
+    {
+      new: true,
+    }
+  ).populate("slides");
+
+  for (let i = 0; i < slides.length; i++) {
+    const { _id, heading, description, url } = slides[i];
+    await Slide.findByIdAndUpdate(
+      _id,
+      {
+        heading,
+        description,
+        url,
+      },
+      {
+        new: true,
+      }
+    );
+  }
+
+  res.status(200).send({
+    success: true,
+    message: "story updated successfully",
+    updatedStory,
+  });
+});
 
 const handleGetHomeFeed = asyncHandler(async (req, res, next) => {
   let filterArray = req.body.filter;
@@ -67,6 +98,7 @@ const handleGetHomeFeed = asyncHandler(async (req, res, next) => {
     "World",
     "Others",
   ];
+
   let homeFeedArray = [];
 
   if (filterArray.includes("ALL")) {

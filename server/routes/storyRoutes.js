@@ -16,6 +16,7 @@ router.post("/homefeed", handleGetHomeFeed);
 router.get("/view/:id", handleViewStory);
 router.get("/mystories", authMiddleware, handleMyStories);
 router.get("/bookmarks", authMiddleware, handleBookmarks);
+
 router.patch("/togglebookmark/:slideId", authMiddleware, handleToggleBookmark);
 router.patch("/togglelike/:slideId", authMiddleware, handleToggleLike);
 router.patch("/edit", handleEditStory);
