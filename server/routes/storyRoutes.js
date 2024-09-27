@@ -13,7 +13,7 @@ router.post("/post", authMiddleware, handleCreateStory);
 router.post("/homefeed", handleGetHomeFeed);
 router.get("/view/:id", handleViewStory);
 router.patch("/togglebookmark/:slideId", authMiddleware, handleToggleBookmark);
-router.post("/toggleLike/:slideId", authMiddleware, handleToggleLike);
+router.patch("/togglelike/:slideId", authMiddleware, handleToggleLike);
 router.patch("/edit", handleEditStory);
 
 module.exports = router;

@@ -6,6 +6,7 @@ import { GetCurrentUser, LoginUser, RegisterUser } from "../../api/users";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { SetUser } from "../../redux/userSlice";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const initialState = {
   username: "",
@@ -23,17 +24,16 @@ const passwordRegex = new RegExp(
   "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$"
 );
 
-export default function Login({
-  headingtext,
-  setShowLoginModal,
-  setShowRegisterModal,
-}) {
+export default function Login({ headingtext }) {
   const inputref = useRef(null);
   const [error, setError] = useState("");
   const [form, setForm] = useState(initialState);
   const { username, password } = form;
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { storyId, index } = location.state;
 
   const validateToken = async () => {
     try {
@@ -85,7 +85,9 @@ export default function Login({
         localStorage.setItem("token", response.token);
         validateToken();
         toast.success(response.message);
-        setShowLoginModal(false);
+        if (storyId) {
+          navigate(`/viewstories/${storyId}?index=${index}`);
+        } else navigate("/");
       } else {
         if (response.message === "Please enter valid username or password") {
           setError("Please enter valid username or password");
@@ -107,7 +109,7 @@ export default function Login({
       if (response.success) {
         toast.success("User registered successfully");
         setForm(initialState);
-        setShowRegisterModal(false);
+        navigate("/");
       } else {
         throw new Error(response.message);
       }
@@ -126,11 +128,12 @@ export default function Login({
           alt=""
           className={classes.crossbtn}
           onClick={() => {
-            if (headingtext === "Login") {
-              setShowLoginModal(false);
-            } else {
-              setShowRegisterModal(false);
-            }
+            // if (headingtext === "Login") {
+            //   setShowLoginModal(false);
+            // } else {
+            //   setShowRegisterModal(false);
+            // }
+            navigate("/");
           }}
         />
 

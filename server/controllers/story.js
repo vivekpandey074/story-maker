@@ -96,22 +96,23 @@ const handleGetHomeFeed = asyncHandler(async (req, res, next) => {
 const handleToggleBookmark = asyncHandler(async (req, res, next) => {
   const { slideId } = req.params;
   const { userId } = req.body;
-  console.log(slideId);
+
   const currentSlide = await Slide.findById(slideId);
 
   if (!currentSlide) throw new ApiError(404, "current slide not found");
 
   let updatedSlide;
   if (currentSlide.bookmarks.includes(userId)) {
-    console.log("hi");
-    updatedSlide = await currentSlide.updateOne(
+    updatedSlide = await Slide.findOneAndUpdate(
+      { _id: slideId },
       {
         bookmarks: currentSlide.bookmarks.filter((item) => item !== userId),
       },
       { new: true }
     );
   } else {
-    updatedSlide = await currentSlide.updateOne(
+    updatedSlide = await Slide.findOneAndUpdate(
+      { _id: slideId },
       {
         bookmarks: [...currentSlide.bookmarks, userId],
       },
@@ -119,15 +120,53 @@ const handleToggleBookmark = asyncHandler(async (req, res, next) => {
     );
   }
 
+  const updatedStory = await Story.findById(currentSlide.story).populate(
+    "slides"
+  );
+
   res.send({
     success: true,
-    message: "likes array updated successfully",
-    updatedSlide,
+    message: "bookmark array updated successfully",
+    updatedStory,
   });
 });
 
 const handleToggleLike = asyncHandler(async (req, res, next) => {
   const { slideId } = req.params;
+  const { userId } = req.body;
+
+  const currentSlide = await Slide.findById(slideId);
+
+  if (!currentSlide) throw new ApiError(404, "current slide not found");
+
+  let updatedSlide;
+  if (currentSlide.likes.includes(userId)) {
+    updatedSlide = await Slide.findOneAndUpdate(
+      { _id: slideId },
+      {
+        likes: currentSlide.likes.filter((item) => item !== userId),
+      },
+      { new: true }
+    );
+  } else {
+    updatedSlide = await Slide.findOneAndUpdate(
+      { _id: slideId },
+      {
+        likes: [...currentSlide.likes, userId],
+      },
+      { new: true }
+    );
+  }
+
+  const updatedStory = await Story.findById(currentSlide.story).populate(
+    "slides"
+  );
+
+  res.send({
+    success: true,
+    message: "likes array updated successfully",
+    updatedStory,
+  });
 });
 
 module.exports = {

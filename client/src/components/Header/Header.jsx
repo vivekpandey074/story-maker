@@ -3,8 +3,6 @@ import classes from "./index.module.css";
 import bookmarkicon from "../../assets/bookmark-icon.svg";
 import hamburgericon from "../../assets/hamburger-icon.svg";
 import sampleuser from "../../assets/sample_user.jpg";
-import Login from "../../pages/Login/Login";
-import AddStory from "../../pages/AddStory/AddStory";
 import { useDispatch, useSelector } from "react-redux";
 import { GetCurrentUser } from "../../api/users";
 import { SetUser } from "../../redux/userSlice";
@@ -45,8 +43,6 @@ export default function Header() {
     }
   }, []);
 
-  const [showRegisterModal, setShowRegisterModal] = useState(false);
-  const [showLoginModal, setShowLoginModal] = useState(false);
   return (
     <>
       {" "}
@@ -55,13 +51,13 @@ export default function Header() {
           <div className={classes.btnbox}>
             <button
               className={classes.redbtn + " " + classes.btn}
-              onClick={() => setShowRegisterModal(true)}
+              onClick={() => navigate("/register")}
             >
               Register Now
             </button>
             <button
               className={classes.bluebtn + " " + classes.btn}
-              onClick={() => setShowLoginModal(true)}
+              onClick={() => navigate("/login")}
             >
               Sign In
             </button>
@@ -103,19 +99,6 @@ export default function Header() {
           </div>
         )}
       </div>
-      {showLoginModal ? (
-        <Login headingtext={"Login"} setShowLoginModal={setShowLoginModal} />
-      ) : (
-        <></>
-      )}
-      {showRegisterModal ? (
-        <Login
-          headingtext={"Register"}
-          setShowRegisterModal={setShowRegisterModal}
-        />
-      ) : (
-        <></>
-      )}
     </>
   );
 }
