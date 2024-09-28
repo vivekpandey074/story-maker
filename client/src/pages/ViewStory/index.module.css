@@ -41,6 +41,9 @@
   position: absolute;
   bottom: 0;
   gap: 0.5vw;
+  width: 100%;
+
+  box-sizing: border-box;
   z-index: 99;
   text-align: start;
   padding: 0.8vw;

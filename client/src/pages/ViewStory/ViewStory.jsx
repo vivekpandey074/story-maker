@@ -1,5 +1,5 @@
 import classes from "./index.module.css";
-import defaultimage from "../../assets/defaultimage2.jpg";
+import defaultimage from "../../assets/defaultimage1.jpeg";
 import downgradient from "../../assets/down-gradient.png";
 import upgradient from "../../assets/upgradient.png";
 import leftArrow from "../../assets/leftArrow.svg";
@@ -16,13 +16,14 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { GetCurrentStory, ToggleBookmark, ToggleLike } from "../../api/story";
+import { checkMediaType } from "../../utils/checkUrl";
 
 export default function ViewStory() {
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const queryindex = searchParams.get("index");
-
+  const [mediaType, setMediaType] = useState(null);
   const { user } = useSelector((state) => state.users);
 
   const [currentIndex, setCurrentIndex] = useState(queryindex || 0);
@@ -118,6 +119,20 @@ export default function ViewStory() {
 
   const handleDownloadSlide = () => {};
 
+  useEffect(() => {
+    setLoading(true);
+    setMediaType(null);
+
+    const fetchMediaType = async () => {
+      const url = story?.slides[currentIndex]?.url;
+      const type = await checkMediaType(url);
+      setMediaType(type);
+      setLoading(false);
+    };
+
+    fetchMediaType();
+  }, [story, currentIndex, checkMediaType]);
+
   return (
     <div className={classes.main_div}>
       <div className={classes.overlay}></div>;
@@ -133,11 +148,20 @@ export default function ViewStory() {
           />
           <div className={classes.storybox}>
             <img src={upgradient} alt="" className={classes.gradientimg} />
-            <img
-              src={story?.slides[currentIndex].url || defaultimage}
-              alt=""
-              className={classes.storyimage}
-            />
+            {mediaType === "Video" ? (
+              <video
+                className={classes.storyimage}
+                src={story?.slides[currentIndex].url || defaultimage}
+                autoPlay
+                loop
+              ></video>
+            ) : (
+              <img
+                src={story?.slides[currentIndex].url || defaultimage}
+                alt=""
+                className={classes.storyimage}
+              />
+            )}
             <img src={downgradient} alt="" className={classes.gradientimg} />
             <div className={classes.upper_cont}>
               <div className={classes.slide_array_cont}>

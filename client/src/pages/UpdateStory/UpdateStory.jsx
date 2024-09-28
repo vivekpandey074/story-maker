@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { UpdateStoryApi } from "../../api/story";
+import { checkUrl } from "../../utils/checkUrl";
 
 const initialSlide = {
   heading: "",
@@ -56,6 +57,25 @@ export default function UpdateStory() {
 
     return true;
   };
+
+  const checkAllUrlValidity = async (slidesArray) => {
+    for (let k = 0; k < slidesArray.length; k++) {
+      const { url } = slidesArray[k];
+
+      const res = await checkUrl(url);
+      if (res === "Unsupported image/video URL") {
+        toast.error(`Unsupported image/video URL on Slide:${k + 1}`);
+        return false;
+      }
+      if (res === "Video duration is more than 15 seconds") {
+        toast.error(`Video duration is more than 15 seconds on Slide:${k + 1}`);
+
+        return false;
+      }
+    }
+
+    return true;
+  };
   const handlePostStory = async (e) => {
     e.preventDefault();
 
@@ -63,6 +83,11 @@ export default function UpdateStory() {
       toast.error("All field of slides are required");
       return;
     }
+
+    setLoading(true);
+    const res = await checkAllUrlValidity(slidesArray);
+    setLoading(false);
+    if (!res) return;
 
     try {
       setLoading(true);

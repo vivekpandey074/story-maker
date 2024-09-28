@@ -20,6 +20,7 @@ import medical from "../../assets/medical.jpg";
 import world from "../../assets/world.jpeg";
 import others from "../../assets/others.jpg";
 import edit from "../../assets/edit.svg";
+import { isImageUrl } from "../../utils/checkUrl.js";
 
 const categories = [
   { type: "ALL", path: all },
@@ -216,11 +217,24 @@ export default function Home() {
                             alt=""
                             className={classes.gradientimg}
                           />
-                          <img
+                          {/* <img
                             src={story.slides[0].url || defaultimage}
                             alt=""
                             className={classes.storyimage}
-                          />
+                          /> */}
+                          {!isImageUrl(story?.slides[0].url) ? (
+                            <video
+                              className={classes.storyimage}
+                              src={story?.slides[0].url || defaultimage}
+                            ></video>
+                          ) : (
+                            <img
+                              src={story?.slides[0].url || defaultimage}
+                              alt=""
+                              className={classes.storyimage}
+                            />
+                          )}
+
                           <img
                             src={downgradient}
                             alt=""
@@ -292,11 +306,18 @@ export default function Home() {
                             alt=""
                             className={classes.gradientimg}
                           />
-                          <img
-                            src={story.slides[0].url || defaultimage}
-                            alt=""
-                            className={classes.storyimage}
-                          />
+                          {!isImageUrl(story?.slides[0].url) ? (
+                            <video
+                              className={classes.storyimage}
+                              src={story?.slides[0].url || defaultimage}
+                            ></video>
+                          ) : (
+                            <img
+                              src={story?.slides[0].url || defaultimage}
+                              alt=""
+                              className={classes.storyimage}
+                            />
+                          )}
                           <img
                             src={downgradient}
                             alt=""

@@ -1,4 +1,4 @@
-const isImageUrl = (url) => {
+export const isImageUrl = (url) => {
   return (
     url.endsWith(".jpg") ||
     url.endsWith(".jpeg") ||
@@ -45,5 +45,36 @@ export const checkUrl = async (url) => {
   } catch (error) {
     console.log(error.message);
     return "Unsupported image/video URL";
+  }
+};
+
+export const checkMediaType = async (url) => {
+  if (isImageUrl(url)) {
+    return "Image";
+  }
+
+  const video = document.createElement("video");
+  video.src = url;
+
+  const loadMetaData = () =>
+    new Promise((resolve, reject) => {
+      video.addEventListener("loadedmetadata", () => {
+        if (!isNaN(video.duration)) {
+          resolve("Video");
+        } else {
+          reject(new Error("Invalid"));
+        }
+      });
+      video.addEventListener("error", () => {
+        reject(new Error("Invalid"));
+      });
+    });
+
+  try {
+    const res = await loadMetaData();
+    return res;
+  } catch (err) {
+    console.log(err);
+    return "Invalid";
   }
 };
