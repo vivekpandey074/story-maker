@@ -32,7 +32,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
-      <ToastContainer />
+      <ToastContainer style={{ zIndex: 20000 }} />
     </>
   );
 }

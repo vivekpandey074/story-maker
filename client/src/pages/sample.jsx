@@ -4,25 +4,97 @@ import React, { useEffect, useRef, useState } from "react";
 export default function Sample() {
   const [ans, setAns] = useState(false);
 
-  const checkVideoUrl = async (url) => {
+  const isImageUrl = (url) => {
+    return (
+      url.endsWith(".jpg") ||
+      url.endsWith(".jpeg") ||
+      url.endsWith(".png") ||
+      url.endsWith(".gif") ||
+      url.endsWith(".bmp") ||
+      url.endsWith(".svg")
+    );
+  };
+
+  // const checkUrl = (url) => {
+  //   const video = document.createElement("video");
+  //   video.src = url;
+
+  //   // Load the video metadata
+  //   video.addEventListener("loadedmetadata", () => {
+  //     if (video.duration.toString() === "NaN") {
+  //       if (isImageUrl(url)) {
+  //         setAns("Valid");
+  //       } else {
+  //         setAns("image/video url unsupported");
+  //       }
+  //     } else {
+  //       if (video.duration <= 15) {
+  //         setAns("Valid");
+  //       } else {
+  //         setAns("More than 15 sec");
+  //       }
+  //     }
+  //   });
+  // };
+
+  const checkUrl = async (url) => {
+    if (isImageUrl(url)) {
+      return "Valid Image URL";
+    }
+
     const video = document.createElement("video");
     video.src = url;
 
-    // Load the video metadata
-    video.addEventListener("loadedmetadata", () => {
-      console.log(`Video duration: ${video.duration} seconds`);
-    });
+    // Wrap the video loading in a Promise to await the loadedmetadata event
+    const loadVideoMetadata = () =>
+      new Promise((resolve, reject) => {
+        video.addEventListener("loadedmetadata", () => {
+          if (!isNaN(video.duration)) {
+            resolve(video.duration);
+          } else {
+            reject(new Error("Invalid video duration"));
+          }
+        });
+        video.addEventListener("error", () => {
+          reject(new Error("Failed to load video"));
+        });
+      });
+
+    try {
+      const duration = await loadVideoMetadata();
+
+      console.log(`Video duration: ${duration} seconds`);
+      if (duration <= 15) {
+        return "Valid Video URL";
+      } else {
+        return "Video duration is more than 15 seconds";
+      }
+    } catch (error) {
+      console.log(error.message);
+      return "Unsupported image/video URL";
+    }
   };
 
-  useEffect(() => {
-    checkVideoUrl(
-      "https://firebasestorage.googleapis.com/v0/b/qriositynet-dev.appspot.com/o/chat%2FMgttfKqKIDhQ6bgtgy6V%2Fvideos%2F1663229371400watermelon-bunny.mp4?alt=media&token=722bb260-c65b-46fe-8805-4a5a742f282d"
-    );
-  }, []);
+  useEffect(() => {}, []);
+
+  const handleClick = () => {
+    console.log("clicking");
+    //  ""
+    checkUrl("https://static.remove.bg/sample-gallery/graphics/bird-thumbna")
+      // "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+
+      .then((res) => {
+        console.log("hi");
+        console.log(res);
+      })
+      .error((err) => console.log(err));
+  };
 
   return (
     <div>
-      <p style={{ color: "black" }}>{ans}</p>
+      <p style={{ color: "black" }} onClick={handleClick}>
+        Click here
+      </p>
     </div>
   );
 }

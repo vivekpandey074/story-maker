@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { PostStory } from "../../api/story";
-import axios from "axios";
+import { checkUrl } from "../../utils/checkUrl";
 
 const initialSlide = {
   heading: "",
@@ -52,32 +52,32 @@ export default function AddStory() {
     setCategory(e.target.value);
   };
 
-  const checkValidUrl = async (url) => {
-    try {
-      const response = await axios.head(url); // Use 'head' to get headers without downloading content
-      const contentType = response.headers["content-type"];
-
-      if (contentType.startsWith("image")) {
-        return "Image";
-      } else if (contentType.startsWith("video")) {
-        return "Video";
-      } else {
-        return "Unknown";
-      }
-    } catch (err) {
-      return "Invalid URL";
-    }
-  };
-
   const checkAllfieldRequired = (slidesArray, category) => {
     if (!category) return false;
 
     for (let i = 0; i < slidesArray.length; i++) {
       const { heading, description, url } = slidesArray[i];
 
-      // console.log(checkValidUrl(url));
-
       if (!heading || !description || !url) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+
+  const checkAllUrlValidity = async (slidesArray) => {
+    for (let k = 0; k < slidesArray.length; k++) {
+      const { url } = slidesArray[k];
+
+      const res = await checkUrl(url);
+      if (res === "Unsupported image/video URL") {
+        toast.error(`Unsupported image/video URL on Slide:${k + 1}`);
+        return false;
+      }
+      if (res === "Video duration is more than 15 seconds") {
+        toast.error(`Video duration is more than 15 seconds on Slide:${k + 1}`);
+
         return false;
       }
     }
@@ -91,6 +91,11 @@ export default function AddStory() {
       toast.error("All field of slides are required");
       return;
     }
+
+    setLoading(true);
+    const res = await checkAllUrlValidity(slidesArray);
+    setLoading(false);
+    if (!res) return;
 
     try {
       setLoading(true);
@@ -218,9 +223,7 @@ export default function AddStory() {
               <option value="World" className={classes.option_text}>
                 World
               </option>
-              <option value="Sports" className={classes.option_text}>
-                Sports
-              </option>
+
               <option value="Others" className={classes.option_text}>
                 Others
               </option>
