@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { GetCurrentStory, ToggleBookmark, ToggleLike } from "../../api/story";
 import { checkMediaType } from "../../utils/checkUrl";
+import { saveAs } from "file-saver";
 
 export default function ViewStory() {
   const { id } = useParams();
@@ -117,7 +118,11 @@ export default function ViewStory() {
     }
   };
 
-  const handleDownloadSlide = () => {};
+  const handleDownloadSlide = (imageUrl) => {
+    if (!user) {
+      navigate("/login", { state: { storyId: id, index: currentIndex } });
+    } else saveAs(imageUrl, "image.jpg");
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -143,7 +148,9 @@ export default function ViewStory() {
           <img
             src={leftArrow}
             alt=""
-            className={classes.arrow + " " + classes.btn}
+            className={
+              classes.arrow + " " + classes.btn + " " + classes.left_arrow
+            }
             onClick={handlePrevIndex}
           />
           <div className={classes.storybox}>
@@ -221,7 +228,9 @@ export default function ViewStory() {
                   src={downloadbtn}
                   alt=""
                   className={classes.btn}
-                  onClick={handleDownloadSlide}
+                  onClick={() =>
+                    handleDownloadSlide(story?.slides[currentIndex].url)
+                  }
                 />
                 <div className={classes.likes_div}>
                   <img
@@ -245,7 +254,9 @@ export default function ViewStory() {
           <img
             src={rightArrow}
             alt=""
-            className={classes.arrow + " " + classes.btn}
+            className={
+              classes.arrow + " " + classes.btn + " " + classes.right_arrow
+            }
             onClick={handleNextIndex}
           />
         </div>

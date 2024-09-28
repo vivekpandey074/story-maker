@@ -85,3 +85,36 @@
   justify-content: center;
   align-items: center;
 }
+
+@media (max-width: 600px) {
+  .storycont {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8vw;
+  }
+
+  .storybox {
+    width: 95%;
+    border-radius: 4vw;
+    overflow: hidden;
+  }
+
+  .story_text_cont {
+    padding: 2vw;
+    padding-left: 4vw;
+    margin-bottom: 10vw;
+  }
+  .story_heading {
+    font-size: 6vw;
+    margin: 0px;
+  }
+
+  .story_subtext {
+    font-size: 3.5vw;
+  }
+
+  .cat_heading_text {
+    font-size: 7vw;
+  }
+}

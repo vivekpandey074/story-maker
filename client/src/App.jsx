@@ -9,7 +9,6 @@ import AddStory from "./pages/AddStory/AddStory";
 import Login from "./pages/Login/Login";
 import Bookmarks from "./pages/Bookmarks/Bookmarks";
 import UpdateStory from "./pages/UpdateStory/UpdateStory";
-import Sample from "./pages/sample";
 
 function App() {
   return (
@@ -28,7 +27,7 @@ function App() {
             <Route path="updatestory" element={<UpdateStory />} />
           </Route>
           <Route path="/bookmarks" element={<Bookmarks />} />
-          <Route path="/test" element={<Sample />} />
+
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

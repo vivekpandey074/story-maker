@@ -85,6 +85,7 @@
 .btn_panel {
   display: flex;
   justify-content: space-around;
+  align-items: center;
 }
 
 .upper_cont {
@@ -159,4 +160,82 @@
   font-style: normal;
   text-align: center;
   font-size: 0.9vw;
+}
+
+@media (max-width: 600px) {
+  .storybox {
+    width: 100%;
+    height: 100%;
+  }
+
+  .left_arrow {
+    opacity: 0;
+    position: absolute;
+    left: 5vh;
+    height: 20vh !important;
+    z-index: 20000;
+  }
+
+  .right_arrow {
+    opacity: 0;
+    position: absolute;
+    right: 5vh;
+    height: 20vh !important;
+    z-index: 20000;
+  }
+
+  .modal_cont {
+    height: 100%;
+    z-index: 10000;
+    width: 100%;
+  }
+
+  .story_text_cont {
+    padding: 2vw;
+    padding-left: 4vw;
+    margin-bottom: 10vw;
+  }
+  .story_heading {
+    font-size: 7vw;
+    margin: 0px;
+  }
+
+  .story_subtext {
+    font-size: 5vw;
+  }
+
+  .likes_count {
+    font-size: 6vw;
+  }
+
+  .likes_div {
+    gap: 3vw;
+    align-items: center;
+  }
+
+  .custom_toast_message {
+    width: 100%;
+    height: 6vh;
+    margin-bottom: 8vh;
+    text-align: center;
+    border-radius: 5vw;
+  }
+  .main_div {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+  }
+
+  .active_slide {
+    background-color: white;
+  }
+
+  .slide_array_box {
+    height: 0.6vw;
+  }
+
+  .btn {
+    height: 3.5vh;
+  }
 }

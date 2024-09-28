@@ -8,12 +8,14 @@ import { GetCurrentUser } from "../../api/users";
 import { SetUser } from "../../redux/userSlice";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import blackcross from "../../assets/blackcross.svg";
 
 export default function Header({ bookmarkactive }) {
   const { user } = useSelector((state) => state.users);
   const dispatch = useDispatch();
   const [showLogout, setShowLogout] = useState(false);
   const navigate = useNavigate();
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
 
   const validateToken = async () => {
     try {
@@ -44,6 +46,17 @@ export default function Header({ bookmarkactive }) {
     }
   }, []);
 
+  const handleResize = () => {
+    setIsMobile(window.innerWidth <= 600);
+  };
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <>
       {" "}
@@ -51,23 +64,37 @@ export default function Header({ bookmarkactive }) {
         {!user ? (
           <div className={classes.btnbox}>
             <button
-              className={classes.redbtn + " " + classes.btn}
+              className={
+                classes.redbtn + " " + classes.btn + " " + classes.bookmark_btn
+              }
               onClick={() => navigate("/register")}
             >
               Register Now
             </button>
             <button
-              className={classes.bluebtn + " " + classes.btn}
+              className={
+                classes.bluebtn + " " + classes.bookmark_btn + " " + classes.btn
+              }
               onClick={() => navigate("/login")}
             >
               Sign In
             </button>
+            {isMobile && (
+              <img
+                src={hamburgericon}
+                alt="hamburder-icon"
+                className={classes.hamburger}
+                onClick={() => setShowLogout((prev) => !prev)}
+              />
+            )}
           </div>
         ) : (
           <div className={classes.btnbox}>
             <button
               className={
                 classes.btn +
+                " " +
+                classes.bookmark_btn +
                 " " +
                 classes.redbtn +
                 " " +
@@ -79,7 +106,9 @@ export default function Header({ bookmarkactive }) {
               Bookmarks
             </button>
             <button
-              className={classes.btn + " " + classes.redbtn}
+              className={
+                classes.btn + " " + classes.add_story_btn + " " + classes.redbtn
+              }
               onClick={() => navigate("/addstory")}
             >
               Add story
@@ -87,7 +116,7 @@ export default function Header({ bookmarkactive }) {
             <img
               src={sampleuser}
               alt="sample-user"
-              className={classes.sampleuser}
+              className={classes.sampleuser + " " + classes.bookmark_btn}
             />
             <img
               src={hamburgericon}
@@ -98,6 +127,80 @@ export default function Header({ bookmarkactive }) {
             {showLogout && (
               <div className={classes.logout_div}>
                 <p className={classes.name_text}>{user.username}</p>
+                <button
+                  className={classes.btn + " " + classes.redbtn}
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+        {isMobile && showLogout && (
+          <div className={classes.logout_div}>
+            {!user ? (
+              <div className={classes.mobile_btnbox}>
+                <img
+                  src={blackcross}
+                  alt=""
+                  className={classes.blackcross_btn}
+                  onClick={() => setShowLogout(false)}
+                />
+                <button
+                  className={classes.redbtn + " " + classes.btn}
+                  onClick={() => navigate("/login")}
+                >
+                  Login
+                </button>
+                <button
+                  className={classes.redbtn + " " + classes.btn}
+                  onClick={() => navigate("/register")}
+                >
+                  Register
+                </button>
+              </div>
+            ) : (
+              <div className={classes.mobile_btnbox}>
+                <img
+                  src={blackcross}
+                  alt=""
+                  className={classes.blackcross_btn}
+                  onClick={() => setShowLogout(false)}
+                />
+                <div className={classes.user_div}>
+                  <img
+                    src={sampleuser}
+                    alt="sample-user"
+                    className={classes.sampleuser}
+                  />
+                  <p>{user?.username}</p>
+                </div>
+                <button
+                  className={classes.btn + " " + classes.redbtn}
+                  onClick={() => setShowLogout(false)}
+                >
+                  Your Story
+                </button>
+                <button
+                  className={classes.btn + " " + classes.redbtn}
+                  onClick={() => navigate("/addstory")}
+                >
+                  Add story
+                </button>
+                <button
+                  className={
+                    classes.btn +
+                    " " +
+                    classes.redbtn +
+                    " " +
+                    (bookmarkactive ? classes.bookmark_active : "")
+                  }
+                  onClick={() => navigate("/bookmarks")}
+                >
+                  <img src={bookmarkicon} alt="" />
+                  Bookmarks
+                </button>
                 <button
                   className={classes.btn + " " + classes.redbtn}
                   onClick={handleLogout}

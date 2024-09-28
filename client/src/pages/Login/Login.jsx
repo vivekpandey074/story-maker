@@ -129,11 +129,6 @@ export default function Login({ headingtext }) {
           alt=""
           className={classes.crossbtn}
           onClick={() => {
-            // if (headingtext === "Login") {
-            //   setShowLoginModal(false);
-            // } else {
-            //   setShowRegisterModal(false);
-            // }
             navigate("/");
           }}
         />
