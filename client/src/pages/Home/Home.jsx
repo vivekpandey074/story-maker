@@ -226,6 +226,8 @@ export default function Home() {
                             <video
                               className={classes.storyimage}
                               src={story?.slides[0].url || defaultimage}
+                              autoPlay
+                              loop
                             ></video>
                           ) : (
                             <img
@@ -310,6 +312,8 @@ export default function Home() {
                             <video
                               className={classes.storyimage}
                               src={story?.slides[0].url || defaultimage}
+                              autoPlay
+                              loop
                             ></video>
                           ) : (
                             <img
