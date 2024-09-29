@@ -76,6 +76,7 @@
   color: white;
   position: relative;
   border-radius: 1.5vw;
+  overflow: hidden;
 }
 
 .arrow {
@@ -259,6 +260,7 @@
     border: 1px solid #4c4c4c;
     border-radius: 1vw;
     padding: 1vw;
+    font-size: 1.5vh;
     text-align: center;
   }
 }

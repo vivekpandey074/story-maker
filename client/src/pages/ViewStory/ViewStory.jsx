@@ -39,7 +39,7 @@ export default function ViewStory() {
   const [isDownloaded, setIsDownloaded] = useState(DownloadedState);
   const [currentIndex, setCurrentIndex] = useState(queryindex || 0);
   const [toastTimer, setToastTimer] = useState(false);
-  const [downloadtoasttimer, setDownloadToastTimer] = useState(true);
+  const [downloadtoasttimer, setDownloadToastTimer] = useState(false);
   const [story, setStory] = useState();
   const navigate = useNavigate();
 
