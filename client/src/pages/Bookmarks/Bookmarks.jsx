@@ -7,6 +7,7 @@ import downgradient from "../../assets/down-gradient.png";
 import upgradient from "../../assets/upgradient.png";
 import { toast } from "react-toastify";
 import { GetBookmarks } from "../../api/story";
+import { isImageUrl } from "../../utils/checkUrl";
 
 export default function Bookmarks() {
   const [bookmarks, setBookmarks] = useState([]);
@@ -61,11 +62,25 @@ export default function Bookmarks() {
                           alt=""
                           className={classes.gradientimg}
                         />
-                        <img
+                        {/* <img
                           src={slide?.url || defaultimage}
                           alt=""
                           className={classes.storyimage}
-                        />
+                        /> */}
+                        {!isImageUrl(slide?.url) ? (
+                          <video
+                            className={classes.storyimage}
+                            src={slide?.url || defaultimage}
+                            autoPlay
+                            loop
+                          ></video>
+                        ) : (
+                          <img
+                            src={slide?.url || defaultimage}
+                            alt=""
+                            className={classes.storyimage}
+                          />
+                        )}
                         <img
                           src={downgradient}
                           alt=""
