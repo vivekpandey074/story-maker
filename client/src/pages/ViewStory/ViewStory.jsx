@@ -18,6 +18,16 @@ import { toast } from "react-toastify";
 import { GetCurrentStory, ToggleBookmark, ToggleLike } from "../../api/story";
 import { checkMediaType } from "../../utils/checkUrl";
 import { saveAs } from "file-saver";
+import downloaddone from "../../assets/download_done.svg";
+
+const DownloadedState = {
+  1: false,
+  2: false,
+  3: false,
+  4: false,
+  5: false,
+  6: false,
+};
 
 export default function ViewStory() {
   const { id } = useParams();
@@ -26,9 +36,10 @@ export default function ViewStory() {
   const queryindex = searchParams.get("index");
   const [mediaType, setMediaType] = useState(null);
   const { user } = useSelector((state) => state.users);
-
+  const [isDownloaded, setIsDownloaded] = useState(DownloadedState);
   const [currentIndex, setCurrentIndex] = useState(queryindex || 0);
   const [toastTimer, setToastTimer] = useState(false);
+  const [downloadtoasttimer, setDownloadToastTimer] = useState(false);
   const [story, setStory] = useState();
   const navigate = useNavigate();
 
@@ -121,7 +132,14 @@ export default function ViewStory() {
   const handleDownloadSlide = (imageUrl) => {
     if (!user) {
       navigate("/login", { state: { storyId: id, index: currentIndex } });
-    } else saveAs(imageUrl, "image.jpg");
+    } else {
+      saveAs(imageUrl, "media");
+      setIsDownloaded((prev) => ({ ...prev, [currentIndex]: true }));
+      setDownloadToastTimer(true);
+      setTimeout(() => {
+        setDownloadToastTimer(false);
+      }, 3000);
+    }
   };
 
   useEffect(() => {
@@ -225,13 +243,18 @@ export default function ViewStory() {
                   onClick={handleBookmark}
                 />
                 <img
-                  src={downloadbtn}
+                  src={isDownloaded[currentIndex] ? downloaddone : downloadbtn}
                   alt=""
                   className={classes.btn}
                   onClick={() =>
                     handleDownloadSlide(story?.slides[currentIndex].url)
                   }
                 />
+                {downloadtoasttimer && (
+                  <div className={classes.download_successfull_text}>
+                    Downloaded Successfully
+                  </div>
+                )}
                 <div className={classes.likes_div}>
                   <img
                     src={

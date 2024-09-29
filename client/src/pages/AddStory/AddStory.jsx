@@ -1,7 +1,7 @@
 import classes from "./index.module.css";
 import crossbtn from "../../assets/crossbtn2.svg";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { PostStory } from "../../api/story";
 import { checkUrl } from "../../utils/checkUrl";
@@ -22,13 +22,21 @@ export default function AddStory() {
   const [category, setCategory] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [tozero, setToZero] = useState(0);
+
+  const [errorSlideIndex, setErrorSlideIndex] = useState("");
+
   const handleRemoveSlide = () => {
     setSlidesArray((prev) => {
       return prev.filter((item, index) => index !== currentSlideIndex);
     });
 
-    setCurrentSlideIndex((prev) => prev - 1);
+    setToZero((prev) => prev - 1);
   };
+
+  useEffect(() => {
+    setCurrentSlideIndex((prev) => prev - 1);
+  }, [tozero]);
 
   const handleAddSlide = () => {
     setSlidesArray((prev) => {
@@ -38,6 +46,7 @@ export default function AddStory() {
   };
 
   const handleChange = (e) => {
+    setError(false);
     setSlidesArray((prev) => {
       return prev.map((item, index) => {
         if (index === currentSlideIndex) {
@@ -72,15 +81,23 @@ export default function AddStory() {
 
       const res = await checkUrl(url);
       if (res === "Unsupported image/video URL") {
+        setCurrentSlideIndex(k);
+        setErrorSlideIndex(k);
+        setError("Unsupported image/video URL");
         toast.error(`Unsupported image/video URL on Slide:${k + 1}`);
         return false;
       }
       if (res === "Video duration is more than 15 seconds") {
+        setCurrentSlideIndex(k);
+        setErrorSlideIndex(k);
+        setError("video length is more than 15 sec");
         toast.error(`Video duration is more than 15 seconds on Slide:${k + 1}`);
 
         return false;
       }
     }
+
+    setError("");
 
     return true;
   };
@@ -148,7 +165,9 @@ export default function AddStory() {
                     src={crossbtn}
                     alt=""
                     className={classes.slide_cut_btn}
-                    onClick={handleRemoveSlide}
+                    onClick={() => {
+                      handleRemoveSlide();
+                    }}
                   />
                 )}
               </div>
@@ -168,22 +187,24 @@ export default function AddStory() {
               <input
                 name="heading"
                 type="text"
-                value={slidesArray[currentSlideIndex].heading}
+                value={slidesArray[currentSlideIndex]?.heading}
                 onChange={handleChange}
                 className={classes.input}
                 placeholder="Your heading"
                 required
+                autoComplete="off"
               />
             </div>
             <div className={classes.inputcont}>
               <label htmlFor="description">Description :</label>
               <textarea
                 name="description"
-                value={slidesArray[currentSlideIndex].description}
+                value={slidesArray[currentSlideIndex]?.description}
                 onChange={handleChange}
                 className={classes.description_text}
                 placeholder="Story Description"
                 required
+                autoComplete="off"
               />
             </div>
             <div className={classes.inputcont}>
@@ -191,17 +212,24 @@ export default function AddStory() {
               <input
                 name="url"
                 type="text"
-                value={slidesArray[currentSlideIndex].url}
+                value={slidesArray[currentSlideIndex]?.url}
                 onChange={handleChange}
-                className={classes.input}
+                className={
+                  classes.input +
+                  " " +
+                  (error && currentSlideIndex === errorSlideIndex
+                    ? classes.error_input
+                    : " ")
+                }
                 placeholder="Add Image/Video URL"
                 required
+                autoComplete="off"
               />
-              {error && (
+              {error && currentSlideIndex === errorSlideIndex && (
                 <p
                   className={classes.error_text + " " + classes.mobile_display}
                 >
-                  {error}
+                  *{error}
                 </p>
               )}
             </div>
