@@ -11,7 +11,7 @@ const userRouter = require("./routes/userRoutes");
 const storyRouter = require("./routes/storyRoutes");
 
 const corsoptions = {
-  origin: "http://localhost:5173",
+  origin: "https://story-maker-roughwork.onrender.com",
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   credentials: true,
 };
