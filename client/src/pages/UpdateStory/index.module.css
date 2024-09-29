@@ -195,3 +195,128 @@
 .add_btn {
   cursor: pointer;
 }
+.form_slide_cont {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media (max-width: 600px) {
+  .add_feed_text {
+    display: block;
+    text-align: center;
+    width: 100%;
+    font-family: "DM Sans", system-ui;
+    font-weight: 700;
+    font-size: 4vw;
+    margin-top: 4vh;
+    color: black;
+  }
+
+  .modal_cont {
+    height: 70%;
+    width: 80%;
+    border-radius: 4.5vw;
+  }
+
+  .crossbtn {
+    top: 3vw;
+    height: 6vw;
+    right: 3vw;
+  }
+
+  .add_slide_text {
+    display: none;
+  }
+
+  .form_slide_cont {
+    flex-direction: row;
+    height: 70%;
+  }
+
+  .slideboxcont {
+    flex-direction: column;
+    width: 30%;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 0.5vw;
+    gap: 3vw;
+  }
+
+  .form {
+    margin-top: 10vh;
+    gap: 2vw;
+  }
+
+  .hide_btn {
+    display: none;
+  }
+
+  .btn_panel {
+    justify-content: center;
+  }
+
+  .btn {
+    width: 18vw;
+    height: 2.8vh;
+    border-radius: 2vh;
+    font-size: 3vw;
+    margin-top: 2vh;
+  }
+
+  .inputcont {
+    width: 90%;
+    flex-direction: column;
+    align-items: start;
+    font-size: 4vw;
+    gap: 1vh;
+  }
+
+  .input {
+    width: 100%;
+    height: 4vh;
+    font-size: 3vw;
+  }
+
+  .common_category_text {
+    display: none;
+  }
+  .description_text {
+    width: 100%;
+    font-size: 3vw;
+  }
+
+  .slidebox {
+    font-size: 3vw;
+    border-radius: 1.5vw;
+    height: 7vh;
+    width: 60%;
+    box-sizing: border-box;
+  }
+
+  .slide_cut_btn {
+    position: absolute;
+    height: 3vw;
+    right: -0.5vw;
+    top: -1.5vw;
+    cursor: pointer;
+  }
+
+  .mobile_display {
+    display: block;
+  }
+  .error_text {
+    color: #ff6969;
+    font-size: 2.5vw;
+  }
+
+  .error_input {
+    border-color: #ff6969;
+    color: #ff6969;
+    outline: none;
+    margin: 0px;
+  }
+}

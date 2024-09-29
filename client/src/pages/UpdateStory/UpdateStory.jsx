@@ -21,6 +21,8 @@ export default function UpdateStory() {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [category, setCategory] = useState(location.state.story.category);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [errorSlideIndex, setErrorSlideIndex] = useState("");
 
   const handleRemoveSlide = () => {
     toast.info("Cannot remove slide in edit mode");
@@ -64,10 +66,16 @@ export default function UpdateStory() {
 
       const res = await checkUrl(url);
       if (res === "Unsupported image/video URL") {
+        setCurrentSlideIndex(k);
+        setErrorSlideIndex(k);
+        setError("Unsupported image/video URL");
         toast.error(`Unsupported image/video URL on Slide:${k + 1}`);
         return false;
       }
       if (res === "Video duration is more than 15 seconds") {
+        setCurrentSlideIndex(k);
+        setErrorSlideIndex(k);
+        setError("video length is more than 15 sec");
         toast.error(`Video duration is more than 15 seconds on Slide:${k + 1}`);
 
         return false;
@@ -123,146 +131,160 @@ export default function UpdateStory() {
           }}
         />
         <p className={classes.add_slide_text}>Add upto 6 slides</p>
-        <div className={classes.slideboxcont}>
-          {slidesArray.map((item, index) => (
-            <div
-              key={index}
-              className={
-                classes.slidebox +
-                " " +
-                (currentSlideIndex === index ? classes.active : "")
-              }
-            >
-              Slide {index + 1}
-              {index >= 3 && (
-                <img
-                  src={crossbtn}
-                  alt=""
-                  className={classes.slide_cut_btn}
-                  onClick={handleRemoveSlide}
-                />
+        <p className={classes.add_feed_text}>Edit your story</p>
+        <div className={classes.form_slide_cont}>
+          {" "}
+          <div className={classes.slideboxcont}>
+            {slidesArray.map((item, index) => (
+              <div
+                key={index}
+                className={
+                  classes.slidebox +
+                  " " +
+                  (currentSlideIndex === index ? classes.active : "")
+                }
+                onClick={() => setCurrentSlideIndex(index)}
+              >
+                Slide {index + 1}
+                {index >= 3 && (
+                  <img
+                    src={crossbtn}
+                    alt=""
+                    className={classes.slide_cut_btn}
+                    onClick={handleRemoveSlide}
+                  />
+                )}
+              </div>
+            ))}
+            {slidesArray.length <= 5 && (
+              <div
+                className={classes.slidebox + " " + classes.add_btn}
+                onClick={handleAddSlide}
+              >
+                Add +
+              </div>
+            )}
+          </div>
+          <form className={classes.form} onSubmit={handlePostStory}>
+            <div className={classes.inputcont}>
+              <label htmlFor="heading">Heading :</label>
+              <input
+                name="heading"
+                type="text"
+                value={slidesArray[currentSlideIndex].heading}
+                onChange={handleChange}
+                className={classes.input}
+                placeholder="Your heading"
+                required
+                autoComplete="off"
+              />
+            </div>
+            <div className={classes.inputcont}>
+              <label htmlFor="description">Description :</label>
+              <textarea
+                name="description"
+                value={slidesArray[currentSlideIndex].description}
+                onChange={handleChange}
+                className={classes.description_text}
+                placeholder="Story Description"
+                required
+                autoComplete="off"
+              />
+            </div>
+            <div className={classes.inputcont}>
+              <label htmlFor="media">Image / Video : </label>
+              <input
+                name="url"
+                type="text"
+                value={slidesArray[currentSlideIndex].url}
+                onChange={handleChange}
+                className={classes.input}
+                placeholder="Add Image/Video URL"
+                required
+                autoComplete="off"
+              />
+              {error && currentSlideIndex === errorSlideIndex && (
+                <p
+                  className={classes.error_text + " " + classes.mobile_display}
+                >
+                  *{error}
+                </p>
               )}
             </div>
-          ))}
-          {slidesArray.length <= 5 && (
-            <div
-              className={classes.slidebox + " " + classes.add_btn}
-              onClick={handleAddSlide}
-            >
-              Add +
+            <div className={classes.inputcont}>
+              <label htmlFor="">Category :</label>
+              <select
+                name="category"
+                id=""
+                onChange={handleSelectChange}
+                value={category}
+                className={classes.input + " " + classes.category_selection}
+                required
+              >
+                <option value="">Select Category</option>
+                <option value="Medical" className={classes.option_text}>
+                  Medical
+                </option>
+                <option value="Fruits" className={classes.option_text}>
+                  Fruits
+                </option>
+                <option value="Food" className={classes.option_text}>
+                  Food
+                </option>
+                <option value="Travel" className={classes.option_text}>
+                  Travel
+                </option>
+                <option value="Technology" className={classes.option_text}>
+                  Technology
+                </option>
+                <option value="World" className={classes.option_text}>
+                  World
+                </option>
+                <option value="Sports" className={classes.option_text}>
+                  Sports
+                </option>
+                <option value="Others" className={classes.option_text}>
+                  Others
+                </option>
+              </select>
+              <p className={classes.common_category_text}>
+                This field will be common for all slides
+              </p>
             </div>
-          )}
+            <div className={classes.btn_panel}>
+              <div className={classes.nav_btns + " " + classes.hide_btn}>
+                <button
+                  className={classes.btn + " " + classes.greenbtn}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setCurrentSlideIndex((prev) => (prev === 0 ? 0 : prev - 1));
+                  }}
+                >
+                  Previous
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setCurrentSlideIndex((prev) =>
+                      prev === slidesArray.length - 1
+                        ? slidesArray.length - 1
+                        : prev + 1
+                    );
+                  }}
+                  className={classes.btn + " " + classes.bluebtn}
+                >
+                  Next
+                </button>
+              </div>
+              <button
+                type="submit"
+                className={classes.btn + " " + classes.redbtn}
+              >
+                {loading ? "Editing..." : "Edit"}
+              </button>
+            </div>
+          </form>
         </div>
-
-        <form className={classes.form} onSubmit={handlePostStory}>
-          <div className={classes.inputcont}>
-            <label htmlFor="heading">Heading :</label>
-            <input
-              name="heading"
-              type="text"
-              value={slidesArray[currentSlideIndex].heading}
-              onChange={handleChange}
-              className={classes.input}
-              placeholder="Your heading"
-              required
-            />
-          </div>
-          <div className={classes.inputcont}>
-            <label htmlFor="description">Description :</label>
-            <textarea
-              name="description"
-              value={slidesArray[currentSlideIndex].description}
-              onChange={handleChange}
-              className={classes.description_text}
-              placeholder="Story Description"
-              required
-            />
-          </div>
-          <div className={classes.inputcont}>
-            <label htmlFor="media">Image / Video : </label>
-            <input
-              name="url"
-              type="text"
-              value={slidesArray[currentSlideIndex].url}
-              onChange={handleChange}
-              className={classes.input}
-              placeholder="Add Image/Video URL"
-              required
-            />
-          </div>
-          <div className={classes.inputcont}>
-            <label htmlFor="">Category :</label>
-            <select
-              name="category"
-              id=""
-              onChange={handleSelectChange}
-              value={category}
-              className={classes.input + " " + classes.category_selection}
-              required
-            >
-              <option value="">Select Category</option>
-              <option value="Medical" className={classes.option_text}>
-                Medical
-              </option>
-              <option value="Fruits" className={classes.option_text}>
-                Fruits
-              </option>
-              <option value="Food" className={classes.option_text}>
-                Food
-              </option>
-              <option value="Travel" className={classes.option_text}>
-                Travel
-              </option>
-              <option value="Technology" className={classes.option_text}>
-                Technology
-              </option>
-              <option value="World" className={classes.option_text}>
-                World
-              </option>
-              <option value="Sports" className={classes.option_text}>
-                Sports
-              </option>
-              <option value="Others" className={classes.option_text}>
-                Others
-              </option>
-            </select>
-            <p className={classes.common_category_text}>
-              This field will be common for all slides
-            </p>
-          </div>
-          <div className={classes.btn_panel}>
-            <div className={classes.nav_btns}>
-              <button
-                className={classes.btn + " " + classes.greenbtn}
-                onClick={(e) => {
-                  e.preventDefault();
-                  setCurrentSlideIndex((prev) => (prev === 0 ? 0 : prev - 1));
-                }}
-              >
-                Previous
-              </button>
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  setCurrentSlideIndex((prev) =>
-                    prev === slidesArray.length - 1
-                      ? slidesArray.length - 1
-                      : prev + 1
-                  );
-                }}
-                className={classes.btn + " " + classes.bluebtn}
-              >
-                Next
-              </button>
-            </div>
-            <button
-              type="submit"
-              className={classes.btn + " " + classes.redbtn}
-            >
-              {loading ? "Editing..." : "Edit"}
-            </button>
-          </div>
-        </form>
       </div>
     </div>
   );
